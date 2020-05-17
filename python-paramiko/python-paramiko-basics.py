@@ -13,7 +13,10 @@ We also need the following:
 '''
 '''
 The following assumes that one can make an ssh connection to the remote machine.
-An ssh server is usually available on Linux. Microsoft has made OpenSSH server and client available on  Windows 10 1809+ and Windows Server 2019 (and later editions). See https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse. For earlier Windows versions, one may need to install Cygwin or similar app.
+An ssh server is usually available on Linux. Microsoft has made OpenSSH server and client available on  Windows 10 1809+ and 
+Windows Server 2019 (and later editions). 
+See https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse. 
+For earlier Windows versions, one may need to install Cygwin or similar app.
 '''
 
 import os, re, socket
