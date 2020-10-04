@@ -24,7 +24,7 @@ node () {
     stage ('Clone Git') {
         echo 'Cloning Git... ParthaK8/codesamples'
         def parthak8_url = "git@github.com:ParthaK8/codesamples"
-        def parthak8_branch = "*/jenkins-test"
+        def parthak8_branch = "*/added-jenkinsfile"
         def local_dir = "parthak8"
         myCheckout(parthak8_url, parthak8_branch, local_dir)
 
