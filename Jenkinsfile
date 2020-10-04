@@ -52,4 +52,11 @@ node () {
 
     }
 
+    stage ('Call python script') {
+        sh '''#!/bin/bash -l
+                python azure_vm_explore.py
+
+        '''
+    }
+
 }

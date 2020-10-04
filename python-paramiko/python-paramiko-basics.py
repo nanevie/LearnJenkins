@@ -117,6 +117,14 @@ def makeDirectory(dirName):
         print "Failed to create directory : " + commandToExecute
         exit(1)
 
+# Sensitive vars to mask
+spiList = [user_password_on_target_vm, intranet_password, artifactory_api_key]
+def printMaskedFailure(command, stringToMask=spiList):
+    cmd2display = command
+    for spItem in stringsToMask:
+        cmd2display = cmd2display.replace(spItem, "xxxxxxxxx")
+    print "Failed :  %s  " % (cmd2display)
+
 ##### Variables have been read from environment, functions are defined, work can begin #####
 
 # Login to mainServer and copy over id files and script files ...
