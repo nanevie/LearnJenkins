@@ -6,7 +6,7 @@ print "reading env vars "
 target_hostname = os.getenv('TARGET_HOSTNAME')
 target_ip = os.getenv('TARGET_IP')
 user_on_target_vm = os.getenv('USER_ON_TARGET_VM')
-target_cloud = os.getenv('TARGET_CLOUD')
+#target_cloud = os.getenv('TARGET_CLOUD')
 private_key = os.getenv('PRIVATE_KEY')
 
 print 'IP: ' + target_ip  + ' User: ' + target_ip
