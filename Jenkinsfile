@@ -8,7 +8,7 @@ userRemoteConfigs: [[credentialsId: 'GitSSH',
 url: 'https://github.com/ParthaK8/codesamples']]
 ]
 */
-def myCheckout(myGitURL, myBRANCH, myLocalDir) {
+def myCheckout(myGitURL, myBranch, myLocalDir) {
     checkout changelog: false, poll: false, scm: [$class: 'GitSCM', 
     branches: [[name: myBranch]], 
     doGenerateSubmoduleConfigurations: false, 
