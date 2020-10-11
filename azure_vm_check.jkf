@@ -1,7 +1,7 @@
 
 node {
     stage('Getting SSH RSA Credentials') {
-        steps { 
+        steps{ 
             withCredentials([sshUserPrivateKey(credentialsId: 'AzureSSHRSA', keyFileVariable: 'myRSAPrivKey', passphraseVariable: '', usernameVariable: 'myRSAUsername')]) {
             // some block
             sh '''#!/bin/bash -l
