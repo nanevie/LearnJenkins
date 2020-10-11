@@ -4,9 +4,9 @@ node {
         withCredentials([sshUserPrivateKey(credentialsId: 'AzureSSHRSA', keyFileVariable: 'myRSAPrivKey', passphraseVariable: '', usernameVariable: 'myRSAUsername')]) {
         // some block
         sh '''#!/bin/bash -l
-            echo "In bash: Username: ${userName}"
+            echo "In bash: Username: $myRSAUsername"
             echo "In bash: RSA Key: ${rsaKey}"
-            echo "$myRSAPrivKey $myRSAUsername@52.188.213.251 hostname"
+            echo "${myRSAPrivKey} $myRSAUsername@52.188.213.251 hostname"
             ssh -i ${myRSAPrivKey} ${myRSAUsername}@52.188.213.251 hostname
         '''
         }  
