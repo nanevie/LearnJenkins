@@ -10,7 +10,7 @@ node {
             //env.userName = ${AzureCentosRSAUser}
             //env.rsaKey = ${AzureCentosRSAKey}
             println creds
-            println $AzureCentosRSAKey
+            echo "$AzureCentosRSAKey"
         }
         println creds
     }
