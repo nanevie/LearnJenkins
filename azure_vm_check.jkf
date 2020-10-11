@@ -10,9 +10,9 @@ node {
                 ssh-keyscan  52.188.213.251 >> ~/.ssh/known_hosts             
                 ssh -i $KeyFile partha@52.188.213.251 hostname
                 cat $KeyFile > ~/.ssh/thisHost_rsa
-                env.keyFile = '~/.ssh/thisHost_rsa'
+                
             '''
-            
+            env.keyFile = '~/.ssh/thisHost_rsa'
             } 
         } 
     //}
