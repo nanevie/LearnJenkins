@@ -5,15 +5,17 @@ node {
             //withCredentials([sshUserPrivateKey(credentialsId: 'AzureSSHRSA', keyFileVariable: 'myRSAPrivKey', passphraseVariable: '', usernameVariable: 'myRSAUsername')]) {
             // some block
             withCredentials([file(credentialsId: 'PrivKeyFile', variable: 'KeyFile')]) {
-            sh '''#!/bin/bash -l
-                echo "In bash: Username: $myRSAUsername"
-                echo "In bash: RSA Key: ${rsaKey}"
-                echo "${myRSAPrivKey} $myRSAUsername@52.188.213.251 hostname"
-                cat $KeyFile
+            sh '''#!/bin/bash -l                
                 ssh -i $KeyFile partha@52.188.213.251 hostname
             '''
             } 
         } 
+    }
+
+    stage('Testing') {
+         sh '''#!/bin/bash -l                
+                ssh -i $KeyFile partha@52.188.213.251 hostname
+            '''      
     }
 }
 
