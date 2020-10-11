@@ -1,13 +1,10 @@
 
 node {
     stage('Getting SSH RSA Credentials') {
-        // script{
             withCredentials([sshUserPrivateKey(credentialsId: 'AzureSSHRSA', 
             keyFileVariable: 'myRSAPrivKey', 
             passphraseVariable: '', 
             usernameVariable: 'myRSAUsername')]) {
-            // some block
-            // withCredentials([file(credentialsId: 'PrivKeyFile', variable: 'KeyFile')]) {
             sh '''#!/bin/bash -l   
                 ssh-keygen -R 52.188.213.251
                 ssh-keyscan  52.188.213.251 >> ~/.ssh/known_hosts             
@@ -15,9 +12,8 @@ node {
                 cat $myRSAPrivKey > ~/.ssh/thisHost_rsa
                 chmod 600 ~/.ssh/thisHost_rsa
             '''
-            env.keyFile = ~/.ssh/thisHost_rsa
-            } 
-        // } 
+            }  
+        env.keyFile = ~/.ssh/thisHost_rsa
     }
 
     stage('Testing') {
