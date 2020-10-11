@@ -1,0 +1,17 @@
+node () {
+    stage ('Clone Git') {
+
+        withCredentials([sshUserPrivateKey(credentialsId: 'AzurePEMKey', 
+        keyFileVariable: 'myPEMFile', 
+        passphraseVariable: '', 
+        usernameVariable: 'AzureUser')]) {
+        sh '''#!/bin/bash -l   
+                ssh-keygen -R 52.188.213.251
+                ssh-keyscan  52.188.213.251 >> ~/.ssh/known_hosts             
+                ssh -i $myPEMFile $AzureUser@52.188.213.251 hostname
+                #cat $myRSAPrivKey > ~/.ssh/thisHost_rsa
+                #chmod 600 ~/.ssh/thisHost_rsa
+            '''    
+        }
+    }
+}
