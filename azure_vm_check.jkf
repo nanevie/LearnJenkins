@@ -1,7 +1,7 @@
 
 node {
     stage('Getting SSH RSA Credentials') {
-        script{
+        //script{
             //withCredentials([sshUserPrivateKey(credentialsId: 'AzureSSHRSA', keyFileVariable: 'myRSAPrivKey', passphraseVariable: '', usernameVariable: 'myRSAUsername')]) {
             // some block
             withCredentials([file(credentialsId: 'PrivKeyFile', variable: 'KeyFile')]) {
@@ -11,7 +11,7 @@ node {
             env.IdRsaFile = "$KeyFile"
             } 
         } 
-    }
+    //}
 
     stage('Testing') {
          sh '''#!/bin/bash -l                
