@@ -9,18 +9,17 @@ node {
             creds = "\nUsername: ${AzureCentosRSAUser}\n RSAKey: ${AzureCentosRSAKey}\n"
 
         }
-        /*
-        withCredentials([sshUserPrivkey(credentialsId: 'AzureSSHRSA', passwordVariable: 'mysqlpassword', usernameVariable: 'mysqlusername')]) 
-        {
-            creds = "\nUsername: ${mysqlusername}\nPassword: ${mysqlpassword}\n"
-        }
-        */
         println creds
     }
 
     stage('Testing Creds') {
         //creds = "\nUsername: ${mysqlusername}\nPassword: ${mysqlpassword}\n"
         println creds
+
+        sh '''#!/bin/bash -l
+                echo "Username: ${AzureCentosRSAUser}"
+                echo "RSA Key: ${AzureCentosRSAKey}"
+        '''
 
     }
 
