@@ -1,0 +1,21 @@
+
+node {
+  stage('Getting SSH RSA Credentials') {
+      withCredentials([sshUserPrivateKey(credentialsId: 'AzureSSHRSA', 
+                        keyFileVariable: 'azureCentosRSAKey', 
+                        passphraseVariable: 'AzureCentosPassphrase', 
+                        usernameVariable: 'AzureCentosRSAUser')]) {
+                        // some block
+            creds = "\nUsername: ${AzureCentosRSAUser}\n RSAKey: ${AzureCentosPassphrase}\n"
+
+        }
+        /*
+        withCredentials([sshUserPrivkey(credentialsId: 'AzureSSHRSA', passwordVariable: 'mysqlpassword', usernameVariable: 'mysqlusername')]) 
+        {
+            creds = "\nUsername: ${mysqlusername}\nPassword: ${mysqlpassword}\n"
+        }
+        */
+        println creds
+    }
+}
+
