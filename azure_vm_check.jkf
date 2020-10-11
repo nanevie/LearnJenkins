@@ -1,6 +1,6 @@
 
 node {
-  stage('Getting SSH RSA Credentials') {
+    stage('Getting SSH RSA Credentials') {
       withCredentials([sshUserPrivateKey(credentialsId: 'AzureSSHRSA', 
                         keyFileVariable: 'AzureCentosRSAKey', 
                         passphraseVariable: 'AzureCentosPassphrase', 
@@ -17,5 +17,12 @@ node {
         */
         println creds
     }
+
+    stage('Testing Creds') {
+        //creds = "\nUsername: ${mysqlusername}\nPassword: ${mysqlpassword}\n"
+        println creds
+
+    }
+
 }
 
