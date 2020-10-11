@@ -8,13 +8,14 @@ node {
             sh '''#!/bin/bash -l                
                 ssh -i $KeyFile partha@52.188.213.251 hostname
             '''
+            env.IdRsaFile = $KeyFile
             } 
         } 
     }
 
     stage('Testing') {
          sh '''#!/bin/bash -l                
-                ssh -i $KeyFile partha@52.188.213.251 hostname
+                ssh -i ${IdRsaFile} partha@52.188.213.251 hostname
             '''      
     }
 }
