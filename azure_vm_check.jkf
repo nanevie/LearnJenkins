@@ -2,13 +2,14 @@
 node {
     stage('Getting SSH RSA Credentials') {
         script{
-            withCredentials([sshUserPrivateKey(credentialsId: 'AzureSSHRSA', keyFileVariable: 'myRSAPrivKey', passphraseVariable: '', usernameVariable: 'myRSAUsername')]) {
+            //withCredentials([sshUserPrivateKey(credentialsId: 'AzureSSHRSA', keyFileVariable: 'myRSAPrivKey', passphraseVariable: '', usernameVariable: 'myRSAUsername')]) {
             // some block
+            withCredentials([string(credentialsId: 'PrivKey', variable: 'PrivKey')]) {
             sh '''#!/bin/bash -l
                 echo "In bash: Username: $myRSAUsername"
                 echo "In bash: RSA Key: ${rsaKey}"
                 echo "${myRSAPrivKey} $myRSAUsername@52.188.213.251 hostname"
-                ssh -i $myRSAPrivKey $myRSAUsername@52.188.213.251 hostname
+                ssh -i $PrivKey partha@52.188.213.251 hostname
             '''
             } 
         } 
