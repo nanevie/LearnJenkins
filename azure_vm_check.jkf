@@ -2,11 +2,11 @@
 node {
   stage('Getting SSH RSA Credentials') {
       withCredentials([sshUserPrivateKey(credentialsId: 'AzureSSHRSA', 
-                        keyFileVariable: 'azureCentosRSAKey', 
+                        keyFileVariable: 'AzureCentosRSAKey', 
                         passphraseVariable: 'AzureCentosPassphrase', 
                         usernameVariable: 'AzureCentosRSAUser')]) {
                         // some block
-            creds = "\nUsername: ${AzureCentosRSAUser}\n RSAKey: ${AzureCentosPassphrase}\n"
+            creds = "\nUsername: ${AzureCentosRSAUser}\n RSAKey: ${AzureCentosRSAKey}\n"
 
         }
         /*
