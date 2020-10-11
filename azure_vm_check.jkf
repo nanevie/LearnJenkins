@@ -10,10 +10,9 @@ node {
             //env.userName = ${AzureCentosRSAUser}
             //env.rsaKey = ${AzureCentosRSAKey}
             println creds
-            echo "${AzureCentosRSAKey}"
-            env.userName = "${AzureCentosRSAKey}"
+            env.userName = "${AzureCentosRSAUser}"
+            env.rsaKey = "${AzureCentosRSAKey}"
         }
-        println creds
     }
 
     stage('Testing Creds') {
@@ -21,8 +20,8 @@ node {
         println creds
         
         sh '''#!/bin/bash -l
-                echo "Username: ${userName}"
-                echo "RSA Key: ${rsaKey}"
+                echo "In bash: Username: ${userName}"
+                echo "In bash: RSA Key: ${rsaKey}"
         '''
 
     }
