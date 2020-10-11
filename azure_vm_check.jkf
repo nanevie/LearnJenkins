@@ -5,7 +5,9 @@ node {
             //withCredentials([sshUserPrivateKey(credentialsId: 'AzureSSHRSA', keyFileVariable: 'myRSAPrivKey', passphraseVariable: '', usernameVariable: 'myRSAUsername')]) {
             // some block
             withCredentials([file(credentialsId: 'PrivKeyFile', variable: 'KeyFile')]) {
-            sh '''#!/bin/bash -l                
+            sh '''#!/bin/bash -l   
+                ssh-keygen -R 52.188.213.251
+                ssh-keyscan  52.188.213.251 >> ~/.ssh/known_hosts             
                 ssh -i $KeyFile partha@52.188.213.251 hostname
             '''
             env.IdRsaFile = "$KeyFile"
