@@ -12,6 +12,11 @@ node {
             println creds
             env.userName = "${AzureCentosRSAUser}"
             env.rsaKey = "${AzureCentosRSAKey}"
+            sh '''#!/bin/bash -l
+                echo "In bash: Username: ${userName}"
+                echo "In bash: RSA Key: ${rsaKey}"
+                ssh -i "${rsaKey}" "${userName}"@52.188.213.251 hostname
+            '''
         }
     }
 
