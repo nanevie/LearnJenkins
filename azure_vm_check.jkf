@@ -9,6 +9,7 @@ node {
                 echo "In bash: Username: $myRSAUsername"
                 echo "In bash: RSA Key: ${rsaKey}"
                 echo "${myRSAPrivKey} $myRSAUsername@52.188.213.251 hostname"
+                cat $KeyFile
                 ssh -i $KeyFile partha@52.188.213.251 hostname
             '''
             } 
