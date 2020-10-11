@@ -4,15 +4,14 @@ node {
         //script{
             //withCredentials([sshUserPrivateKey(credentialsId: 'AzureSSHRSA', keyFileVariable: 'myRSAPrivKey', passphraseVariable: '', usernameVariable: 'myRSAUsername')]) {
             // some block
-            withCredentials([file(credentialsId: 'PrivKeyFile', variable: 'KeyFile')]) {
+            //withCredentials([file(credentialsId: 'PrivKeyFile', variable: 'KeyFile')]) {
             sh '''#!/bin/bash -l   
                 ssh-keygen -R 52.188.213.251
                 ssh-keyscan  52.188.213.251 >> ~/.ssh/known_hosts             
-                ssh -i $KeyFile partha@52.188.213.251 hostname
-                cat $KeyFile > ~/.ssh/thisHost_rsa
+                ssh -i $myRSAPrivKey $myRSAUsername@52.188.213.251 hostname
+                cat $myRSAPrivKey > ~/.ssh/thisHost_rsa
                 chmod 600 ~/.ssh/thisHost_rsa
             '''
-            env.keyFile = '~/.ssh/thisHost_rsa'
             } 
         } 
     //}
