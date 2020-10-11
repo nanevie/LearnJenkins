@@ -7,8 +7,9 @@ node {
                         usernameVariable: 'AzureCentosRSAUser')]) {
                         // some block
             creds = "\nUsername: ${AzureCentosRSAUser}\n RSAKey: ${AzureCentosRSAKey}\n"
-            env.userName = ${AzureCentosRSAUser}
-            env.rsaKey = ${AzureCentosRSAKey}
+            //env.userName = ${AzureCentosRSAUser}
+            //env.rsaKey = ${AzureCentosRSAKey}
+            println ${AzureCentosRSAKey}
         }
         println creds
     }
