@@ -1,37 +1,17 @@
 
 node {
     stage('Getting SSH RSA Credentials') {
-      withCredentials([sshUserPrivateKey(credentialsId: 'AzureSSHRSA', 
-                        keyFileVariable: 'AzureCentosRSAKey', 
-                        passphraseVariable: 'AzureCentosPassphrase', 
-                        usernameVariable: 'AzureCentosRSAUser')]) {
-                        // some block
-            creds = "\nUsername: ${AzureCentosRSAUser}\n RSAKey: ${AzureCentosRSAKey}\n"
-            //env.userName = ${AzureCentosRSAUser}
-            //env.rsaKey = ${AzureCentosRSAKey}
-            println creds
-            env.userName = "${AzureCentosRSAUser}"
-            env.rsaKey = "${AzureCentosRSAKey}"
+        steps { 
+            withCredentials([sshUserPrivateKey(credentialsId: 'AzureSSHRSA', keyFileVariable: 'myRSAPrivKey', passphraseVariable: '', usernameVariable: 'myRSAUsername')]) {
+            // some block
             sh '''#!/bin/bash -l
                 echo "In bash: Username: ${userName}"
                 echo "In bash: RSA Key: ${rsaKey}"
-                echo "$AzureCentosRSAKey $AzureCentosRSAUser@52.188.213.251 hostname"
-                ssh -i $AzureCentosRSAKey $AzureCentosRSAUser@52.188.213.251 hostname
+                echo "$myRSAPrivKey $myRSAUsername@52.188.213.251 hostname"
+                ssh -i $myRSAPrivKey $myRSAUsername@52.188.213.251 hostname
             '''
+            }
         }
     }
-
-    stage('Testing Creds') {
-        //creds = "\nUsername: ${mysqlusername}\nPassword: ${mysqlpassword}\n"
-        println creds
-        
-        sh '''#!/bin/bash -l
-                echo "In bash: Username: ${userName}"
-                echo "In bash: RSA Key: ${rsaKey}"
-                ssh -i "${rsaKey}" "${userName}"@52.188.213.251 hostname
-        '''
-
-    }
-
 }
 
