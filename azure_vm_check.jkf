@@ -7,7 +7,8 @@ node {
                         usernameVariable: 'AzureCentosRSAUser')]) {
                         // some block
             creds = "\nUsername: ${AzureCentosRSAUser}\n RSAKey: ${AzureCentosRSAKey}\n"
-
+            env.userName = ${AzureCentosRSAUser}
+            env.rsaKey = ${AzureCentosRSAKey}
         }
         println creds
     }
@@ -15,8 +16,7 @@ node {
     stage('Testing Creds') {
         //creds = "\nUsername: ${mysqlusername}\nPassword: ${mysqlpassword}\n"
         println creds
-        env.userName = AzureCentosRSAUser
-        env.rsaKey = AzureCentosRSAKey
+        
         sh '''#!/bin/bash -l
                 echo "Username: ${userName}"
                 echo "RSA Key: ${rsaKey}"
