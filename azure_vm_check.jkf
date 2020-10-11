@@ -9,15 +9,17 @@ node {
                 ssh-keygen -R 52.188.213.251
                 ssh-keyscan  52.188.213.251 >> ~/.ssh/known_hosts             
                 ssh -i $KeyFile partha@52.188.213.251 hostname
+                cat $KeyFile > ~/.ssh/thisHost_rsa
+                env.keyFile = '~/.ssh/thisHost_rsa'
             '''
-            env.IdRsaFile = "$KeyFile"
+            
             } 
         } 
     //}
 
     stage('Testing') {
          sh '''#!/bin/bash -l                
-                ssh -i ${IdRsaFile} partha@52.188.213.251 hostname
+                ssh -i ${keyFile} partha@52.188.213.251 hostname
             '''      
     }
 }
