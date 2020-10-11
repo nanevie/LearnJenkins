@@ -8,7 +8,7 @@ node {
             sh '''#!/bin/bash -l                
                 ssh -i $KeyFile partha@52.188.213.251 hostname
             '''
-            env.IdRsaFile = $KeyFile
+            env.IdRsaFile = "$KeyFile"
             } 
         } 
     }
