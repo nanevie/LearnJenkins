@@ -15,7 +15,7 @@ node {
     stage('Testing Creds') {
         //creds = "\nUsername: ${mysqlusername}\nPassword: ${mysqlpassword}\n"
         println creds
-        env.userName = ${mysqlusername}
+        env.userName = ${AzureCentosRSAUser}
         env.rsaKey = ${AzureCentosRSAKey}
         sh '''#!/bin/bash -l
                 echo "Username: ${userName}"
