@@ -15,7 +15,7 @@ node {
             sh '''#!/bin/bash -l
                 echo "In bash: Username: ${userName}"
                 echo "In bash: RSA Key: ${rsaKey}"
-                ssh -i "${env.AzureCentosRSAKey}" "${env.AzureCentosRSAUser}"@52.188.213.251 hostname
+                ssh -i $AzureCentosRSAKey $env.AzureCentosRSAUser@52.188.213.251 hostname
             '''
         }
     }
