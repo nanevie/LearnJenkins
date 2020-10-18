@@ -13,7 +13,7 @@ def validateIP4(vm_ip4) {
         if ( (! octets[i].isNumber()) || (octets[i].toInteger() < 0) )
             { println "IP " + ip + " :: " + octets[i] + " is not valid"; valid = false ; break }
         if ( ( i == 0 ) && ( octets[i].toInteger() == 0 ) ) { println "first octet of IP cannot be zero"; valid = false; break }
-        if ( octets[i].toInteger() > 255 ) { println "IP " + ip + " :: " + octets[i] + " is not valid"; valid = false ; break  }
+        if ( octets[i].toInteger() > 254 ) { println "IP " + ip + " :: " + octets[i] + " is not valid"; valid = false ; break  }
     }
     println "Is ip valid? " + valid 
     env.IP_IS_VALID = valid        
