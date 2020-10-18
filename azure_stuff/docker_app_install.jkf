@@ -25,11 +25,12 @@ node() {
         if(env.VM_IP4) {
             validateIP4(env.VM_IP4)
         } else {
-            println ()
-
+            println ("IP Address is Null, failing the build")
+            currentBuild.result = 'FAILED'
+            return
         }
         if ( env.IP_IS_VALID == "false" ) {
-            println "Given IP Adress " + env.FYRE_CLUSTER_NAME + " for targeted host is invalid. "
+            println "Given IP Adress " + env.VM_IP4 + " for targeted host is invalid. "
             error('Failing the build.')
             currentBuild.result = 'FAILED'
             return
