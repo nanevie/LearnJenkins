@@ -1,9 +1,7 @@
 node () {
-    withEnv(
-                 AZURE_COMMON_CREDS = credentials('AzurePEMKey')
-                 // AZURE_COMMON_CREDS_USR AZURE_COMMON_CREDS_PSW
-    )
+    
     stage ('Stage1') {
+        environment { AZURE_COMMON_CREDS = credentials('AzurePEMKey') }
         sh '''#!/bin/bash -l   
                 ssh-keygen -R 52.188.213.251
                 ssh-keyscan  52.188.213.251 >> ~/.ssh/known_hosts             
