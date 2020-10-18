@@ -1,0 +1,32 @@
+// pull docker images and install using docker-compose
+// target IPv4 address and port to expose are input parameters
+
+def validateIP4(vm_ip4) {
+    println "check valid ip-address is given: "
+    def ip = vm_ip4
+    def octets = (vm_ip4).tokenize( '.' )
+    println "Octet1: " + octets[0] + " :: Octet2: " + octets[1] + " :: Octet3: " + octets[2] + " :: Octet4: " + octets[3]
+
+    if ( octets.size() != 4) { println "No. of octets is not 4" }
+    def valid = true
+    for (i = 0; i < octets.size(); i++) {     
+        if ( (! octets[i].isNumber()) || (octets[i].toInteger() < 0) )
+            { println "IP " + ip + " :: " + octets[i] + " is not valid"; valid = false ; break }
+        if ( ( i == 0 ) && ( octets[i].toInteger() == 0 ) ) { println "first octet of IP cannot be zero"; valid = false; break }
+        if ( octets[i].toInteger() > 255 ) { println "IP " + ip + " :: " + octets[i] + " is not valid"; valid = false ; break  }
+    }
+    println "Is ip valid? " + valid 
+    env.IP_IS_VALID = valid        
+}
+
+node('JENKINS_SLAVE_3') {
+    stage('Validate IP4'){
+        if(env.VM_IP4) {
+            validateIP4(env.VM_IP4)
+        } else {
+            println ()
+        }
+
+    }
+
+}
