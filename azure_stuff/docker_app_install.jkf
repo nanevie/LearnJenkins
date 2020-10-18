@@ -19,7 +19,8 @@ def validateIP4(vm_ip4) {
     env.IP_IS_VALID = valid        
 }
 
-node('JENKINS_SLAVE_3') {
+//node('JENKINS_SLAVE_3') {
+node() {
     stage('Validate IP4'){
         if(env.VM_IP4) {
             validateIP4(env.VM_IP4)
