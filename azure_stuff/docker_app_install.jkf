@@ -25,7 +25,14 @@ node('JENKINS_SLAVE_3') {
             validateIP4(env.VM_IP4)
         } else {
             println ()
+
         }
+        if ( env.IP_IS_VALID == "false" ) {
+            println "Given IP Adress " + env.FYRE_CLUSTER_NAME + " for targeted host is invalid. "
+            error('Failing the build.')
+            currentBuild.result = 'FAILED'
+            return
+        } 
 
     }
 
