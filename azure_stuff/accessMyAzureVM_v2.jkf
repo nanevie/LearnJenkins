@@ -10,8 +10,4 @@ node () {
                 ssh -i $AZURE_COMMON_CREDS_PSW $AZURE_COMMON_CREDS_USR@52.188.213.251 hostname
             '''    
     }
-      
-
-    }
-
 }
