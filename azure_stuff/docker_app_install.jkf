@@ -59,7 +59,7 @@ node() {
         sh '''#!/bin/bash -l   
                 ssh-keygen -R ${VM_IP4}
                 ssh-keyscan ${VM_IP4}  >> ~/.ssh/known_hosts  
-                println('after ssh-keyscan') 
+                echo 'after ssh-keyscan'
                 ls -la $HOME
                 cat   $HOME/.ssh/thisHost_rsa        
                 # ssh -i ~/.ssh/thisHost_rsa ${azur_user}@${VM_IP4} hostname
