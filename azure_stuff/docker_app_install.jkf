@@ -50,6 +50,7 @@ node() {
     stage('retrieve azure creds') {
         env.azure_user = readFile(file: 'azure/azure_user')
         env.azure_pem = readFile(file: 'azure/azure_pem')
+        println(azure_user)
         println(azure_pem)
 
     }
