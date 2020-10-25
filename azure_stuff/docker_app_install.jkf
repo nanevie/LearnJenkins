@@ -37,7 +37,7 @@ node() {
         } 
     }
 
-    stage('store private key) {
+    stage('store private key') {
         withCredentials([sshUserPrivateKey(credentialsId: 'AzurePEMKey', 
         keyFileVariable: 'myPEMFile', 
         passphraseVariable: '', 
@@ -46,12 +46,11 @@ node() {
         writeFile file: 'azure/azure_pem', text: myPEMFile
         }
     }
-/*
+
     stage('retrieve azure creds') {
         env.azure_user = readFile(file: 'azure/azure_user')
         env.azure_pem = readFile(file: 'azure/azure_pem')
         println(azure_pem)
 
     }
-*/
 }
