@@ -98,7 +98,7 @@ node() {
                 ssh-keyscan ${VM_IP4}  >> ~/.ssh/known_hosts  
                 ls -la parthak8
                 ls -la parthak8/azure_stuff
-                scp -i $HOME/.ssh/thisHost_rsa parthak8/azure_stuff/nextcloud_install.sh /tmp
+                scp -i $HOME/.ssh/thisHost_rsa parthak8/azure_stuff/nextcloud_install.sh ${azure_user}@${VM_IP4}:/tmp/
                 ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} /tmp/nextcloud_install.sh
             '''
     }
