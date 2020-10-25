@@ -1,6 +1,17 @@
 // pull docker images and install using docker-compose
 // target IPv4 address and port to expose are input parameters
 
+def myCheckout(myGitUrl, myBranch, myLocalDir) {
+    checkout changelog: false, poll: false, scm: [$class: 'GitSCM',
+    branches: [[name: myBranch]],
+    doGenerateSubmoduleConfigurations: false,
+    extensions: [[$class: 'RelativeTargetDirectory',
+    relativeTargetDir: myLocalDir]],
+    submoduleCfg: [],
+    userRemoteConfigs: [[credentialsId: 'GithubSSH',
+    url: myGitUrl]]
+    ]
+
 def validateIP4(vm_ip4) {
     println "check valid ip-address is given: "
     def ip = vm_ip4
@@ -53,25 +64,40 @@ node() {
         }
     }
 
-    stage('retrieve azure creds') {
+    stage('retrieve azure user') {
         env.azure_user = readFile(file: 'azure/azure_user')
-        env.azure_pem = readFile(file: 'azure/azure_pem')
         println(azure_user)
-        println(azure_pem)
-        
     }
 
     stage('clone the git') {
+        echo "Cloning git"
+        def parthak8_url = "git@github.com:ParthaK8/codesamples"
+        def parthak8_branch = "*/testoper-testing"
+        def local_dir = "parthak8"
+        myCheckout(parthak8_url, parthak8_branch, local_dir)
+
+        // set an environment variable, value of local_dir
+        env.LOCAL_DIR = local_dir
+        
+        // Verify
+        sh "ls -la"
+        sh "ls -la ${LOCAL_DIR}"
+        def CWDABSPATH
+        CWDABSPATH = sh (
+        script: "echo `pwd`",
+                returnStdout: true
+        ).trim()
+        println "Current Working Directory: " + CWDABSPATH
+        env.BASEPATH = CWDABSPATH  // set env var for BASEPATH
+    }
+
+    stage('install nextcloud') {
         sh '''#!/bin/bash -l   
                 ssh-keygen -R ${VM_IP4}
                 ssh-keyscan ${VM_IP4}  >> ~/.ssh/known_hosts  
                 ls -la $HOME/.ssh
-                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} hostname
+                scp -i $HOME/.ssh/thisHost_rsa parthak8/azure_stuff/nextcloud_install.sh /tmp
+                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} /tmp/nextcloud_install.sh
             '''
-
-        //scp -i $HOME/.ssh/thisHost_rsa azure_stuff/nextcloud_install.sh /tmp
-         //       ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} /tmp/nextcloud_install.sh
-
-
     }
 }
