@@ -11,6 +11,7 @@ def myCheckout(myGitUrl, myBranch, myLocalDir) {
     userRemoteConfigs: [[credentialsId: 'GithubSSH',
     url: myGitUrl]]
     ]
+}
 
 def validateIP4(vm_ip4) {
     println "check valid ip-address is given: "
