@@ -62,7 +62,7 @@ node() {
                 echo 'after ssh-keyscan'
                 ls -la $HOME
                 cat   $HOME/.ssh/thisHost_rsa        
-                # ssh -i ~/.ssh/thisHost_rsa ${azur_user}@${VM_IP4} hostname
+                ssh -i $HOME/.ssh/thisHost_rsa ${azur_user}@${VM_IP4} hostname
             '''
 
     }
