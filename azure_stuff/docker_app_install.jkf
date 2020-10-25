@@ -44,8 +44,10 @@ node() {
         usernameVariable: 'AzureUser')]) {
         writeFile file: 'azure/azure_user', text: AzureUser
         writeFile file: 'azure/azure_pem', text: myPEMFile
-        cat $myRSAPrivKey > ~/.ssh/thisHost_rsa
-        chmod 600 ~/.ssh/thisHost_rsa
+        sh '''#!/bin/bash -l
+                cat $myRSAPrivKey > ~/.ssh/thisHost_rsa
+                chmod 600 ~/.ssh/thisHost_rsa
+           '''
         }
     }
 
