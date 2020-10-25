@@ -42,7 +42,7 @@ node() {
         keyFileVariable: 'myPEMFile', 
         passphraseVariable: '', 
         usernameVariable: 'AzureUser')]) {
-        writeFile file: 'azure/azure_user', text: $AzureUser
+        writeFile file: 'azure/azure_user', text: AzureUser
         writeFile file: 'azure/azure_pem', text: myPEMFile
         }
     }
