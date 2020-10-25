@@ -45,7 +45,7 @@ node() {
         writeFile file: 'azure/azure_user', text: AzureUser
         writeFile file: 'azure/azure_pem', text: myPEMFile
         sh '''#!/bin/bash -l
-                cat $myRSAPrivKey > ~/.ssh/thisHost_rsa
+                cat $myPEMFile > ~/.ssh/thisHost_rsa
                 chmod 600 ~/.ssh/thisHost_rsa
            '''
         }
@@ -61,7 +61,8 @@ node() {
                 ssh-keyscan ${VM_IP4}  >> ~/.ssh/known_hosts  
                 echo 'after ssh-keyscan'
                 ls -la $HOME/.ssh
-                cat   $HOME/.ssh/thisHost_rsa        
+                cat $HOME/.ssh/thisHost_rsa   
+
                 ssh -i $HOME/.ssh/thisHost_rsa ${azur_user}@${VM_IP4} hostname
             '''
 
