@@ -52,6 +52,13 @@ node() {
         env.azure_pem = readFile(file: 'azure/azure_pem')
         println(azure_user)
         println(azure_pem)
+        sh '''#!/bin/bash -l   
+                ssh-keygen -R ${VM_IP4}
+                ssh-keyscan ${VM_IP4}  >> ~/.ssh/known_hosts             
+                ssh -i ${azure_pem} ${azur_user}@${VM_IP4} hostname
+                #cat $myRSAPrivKey > ~/.ssh/thisHost_rsa
+                #chmod 600 ~/.ssh/thisHost_rsa
+            '''
 
     }
 }
