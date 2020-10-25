@@ -38,14 +38,13 @@ node() {
     }
 
     stage('store private key) {
-        withCredentials([file(credentialsId: PRIVATE_KEY, variable: 'my_private_key'),
-                 file(credentialsId: PUBLIC_KEY, variable: 'my_public_key')]) {
         withCredentials([sshUserPrivateKey(credentialsId: 'AzurePEMKey', 
         keyFileVariable: 'myPEMFile', 
         passphraseVariable: '', 
         usernameVariable: 'AzureUser')]) {
         writeFile file: 'azure/azure_user', text: $AzureUser
         writeFile file: 'azure/azure_pem', text: myPEMFile
+        }
     }
 
     stage('retrieve azure creds') {
@@ -55,5 +54,4 @@ node() {
 
     }
 
-    }
 }
