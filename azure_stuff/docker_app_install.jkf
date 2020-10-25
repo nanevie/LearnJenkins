@@ -93,6 +93,7 @@ node() {
     }
 
     stage('install nextcloud') {
+        env.remote_command = "/tmp/nextcloud_install.sh " + APP_ACCESS_PORT
         sh '''#!/bin/bash -l   
                 ssh-keygen -R ${VM_IP4}
                 ssh-keyscan ${VM_IP4}  >> ~/.ssh/known_hosts  
@@ -100,7 +101,8 @@ node() {
                 ls -la parthak8/azure_stuff
                 scp -i $HOME/.ssh/thisHost_rsa parthak8/azure_stuff/nextcloud_install.sh ${azure_user}@${VM_IP4}:/tmp/
                 ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} chmod +x /tmp/nextcloud_install.sh
-                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} "/tmp/nextcloud_install.sh ${APP_ACCESS_PORT}"
+                echo ${azure_user}@${VM_IP4} "/tmp/nextcloud_install.sh ${APP_ACCESS_PORT}"
+                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} ${remote_command}
             '''
     }
 }
