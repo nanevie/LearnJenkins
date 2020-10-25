@@ -60,7 +60,8 @@ node() {
                 ssh-keygen -R ${VM_IP4}
                 ssh-keyscan ${VM_IP4}  >> ~/.ssh/known_hosts  
                 ls -la $HOME/.ssh
-                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} hostname
+                #ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} hostname
+                ssh -i $azure_pem ${azure_user}@${VM_IP4} hostname
             '''
 
     }
