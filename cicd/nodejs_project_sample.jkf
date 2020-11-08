@@ -75,10 +75,10 @@ node() {
 
     stage('clone the git') {
         echo "Cloning git"
-        def node_examples_git = "https://github.com/nodejs/examples"
-        def node_examples_branch = "*/main"
-        def local_dir = "node_examples"
-        myCheckout(node_examples_git, node_examples_branch, local_dir)
+        def parthak8_url = "git@github.com:ParthaK8/codesamples"
+        def parthak8_branch = "*/testoper-testing"
+        def local_dir = "parthak8"
+        myCheckout(parthak8_url, parthak8_branch, local_dir)
 
         // set an environment variable, value of local_dir
         env.LOCAL_DIR = local_dir
@@ -95,17 +95,15 @@ node() {
         env.BASEPATH = CWDABSPATH  // set env var for BASEPATH
     }
 
-    stage('clone app and run tests') {
+    stage('transfer bash script and run tests') {
+        env.remote_command = "/tmp/clone_nodeproject_run_tests.sh"
         sh '''#!/bin/bash -l   
                 ssh-keygen -R ${VM_IP4}
                 ssh-keyscan ${VM_IP4}  >> ~/.ssh/known_hosts  
-                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} 'mkdir -p gitrepos'
-                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} 'cd gitrepos'
-                # clone the git
-                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} 'rm -rf examples'
-                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} 'git clone "https://github.com/nodejs/examples"'
-                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} 'cd ./examples/servers/express/api-with-express-and-handlebars'
-                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} 'npm test'
+                // transfer shell script
+                scp -i $HOME/.ssh/thisHost_rsa parthak8/cicd/clone_nodeproject_run_tests.sh ${azure_user}@${VM_IP4}:/tmp/
+                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} chmod +x /tmp/clone_nodeproject_run_tests.sh
+                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} ${remote_command}
             '''
     }
 }
