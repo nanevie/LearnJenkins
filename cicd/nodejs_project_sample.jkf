@@ -104,7 +104,7 @@ node() {
                 # clone the git
                 ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} 'rm -rf examples'
                 ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} 'git clone "https://github.com/nodejs/examples"'
-                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} 'cd examples/servers/express/api-with-express-and-handlebars'
+                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} 'cd ./examples/servers/express/api-with-express-and-handlebars'
                 ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} 'npm test'
             '''
     }
