@@ -1,0 +1,111 @@
+/* 
+   clone a sample nodejs project, run it, and run some tests
+   using git repo https://github.com/nodejs/examples
+   and project https://github.com/nodejs/examples/servers/express/api-with-express-and-handlebars
+   see https://www.vogella.com/tutorials/Jenkins/article.html for info on polling a git at regular intervals
+   see https://www.vogella.com/tutorials/GitHub/article.html#continuous-integration-with-github-and-jenkins-via-webhooks  -
+*/
+
+def myCheckout(myGitUrl, myBranch, myLocalDir) {
+    checkout changelog: false, poll: false, scm: [$class: 'GitSCM',
+    branches: [[name: myBranch]],
+    doGenerateSubmoduleConfigurations: false,
+    extensions: [[$class: 'RelativeTargetDirectory',
+    relativeTargetDir: myLocalDir]],
+    submoduleCfg: [],
+    userRemoteConfigs: [[credentialsId: 'GithubSSH',
+    url: myGitUrl]]
+    ]
+}
+
+def validateIP4(vm_ip4) {
+    println "check valid ip-address is given: "
+    def ip = vm_ip4
+    def octets = (vm_ip4).tokenize( '.' )
+    println "Octet1: " + octets[0] + " :: Octet2: " + octets[1] + " :: Octet3: " + octets[2] + " :: Octet4: " + octets[3]
+
+    if ( octets.size() != 4) { println "No. of octets is not 4" }
+    def valid = true
+    for (i = 0; i < octets.size(); i++) {     
+        if ( (! octets[i].isNumber()) || (octets[i].toInteger() < 0) )
+            { println "IP " + ip + " :: " + octets[i] + " is not valid"; valid = false ; break }
+        if ( ( i == 0 ) && ( octets[i].toInteger() == 0 ) ) { println "first octet of IP cannot be zero"; valid = false; break }
+        if ( octets[i].toInteger() > 254 ) { println "IP " + ip + " :: " + octets[i] + " is not valid"; valid = false ; break  }
+    }
+    println "Is ip valid? " + valid 
+    env.IP_IS_VALID = valid        
+}
+
+// Inputs: env.VM_IPV4  <-- validate that IP is properly-formed
+node() {
+    stage('Validate IP4'){
+        if(env.VM_IP4) {
+            validateIP4(env.VM_IP4)
+        } else {
+            println ("IP Address is Null, failing the build")
+            currentBuild.result = 'FAILED'
+            return
+        }
+        if ( env.IP_IS_VALID == "false" ) {
+            println "Given IP Adress " + env.VM_IP4 + " for targeted host is invalid. "
+            error('Failing the build.')
+            currentBuild.result = 'FAILED'
+            return
+        } 
+    }
+
+    stage('store private key') {
+        withCredentials([sshUserPrivateKey(credentialsId: 'AzurePEMKey', 
+        keyFileVariable: 'myPEMFile', 
+        passphraseVariable: '', 
+        usernameVariable: 'AzureUser')]) {
+        writeFile file: 'azure/azure_user', text: AzureUser
+        writeFile file: 'azure/azure_pem', text: myPEMFile
+        sh '''#!/bin/bash -l
+                cat $myPEMFile > ~/.ssh/thisHost_rsa
+                chmod 600 ~/.ssh/thisHost_rsa
+           '''
+        }
+    }
+
+    stage('retrieve azure user') {
+        env.azure_user = readFile(file: 'azure/azure_user')
+        println(azure_user)
+    }
+
+    stage('clone the git') {
+        echo "Cloning git"
+        def node_examples_git = "https://github.com/nodejs/examples"
+        def node_examples_branch = "*/main"
+        def local_dir = "node_examples"
+        myCheckout(node_examples_git, node_examples_branch, local_dir)
+
+        // set an environment variable, value of local_dir
+        env.LOCAL_DIR = local_dir
+        
+        // Verify
+        sh "ls -la"
+        sh "ls -la ${LOCAL_DIR}"
+        def CWDABSPATH
+        CWDABSPATH = sh (
+        script: "echo `pwd`",
+                returnStdout: true
+        ).trim()
+        println "Current Working Directory: " + CWDABSPATH
+        env.BASEPATH = CWDABSPATH  // set env var for BASEPATH
+    }
+
+    stage('clone app and run tests') {
+        sh '''#!/bin/bash -l   
+                ssh-keygen -R ${VM_IP4}
+                ssh-keyscan ${VM_IP4}  >> ~/.ssh/known_hosts  
+                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} 'mkdir -p gitrepos'
+                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} 'cd gitrepos'
+                # clone the git
+                remote_command='git clone "https://github.com/nodejs/examples"'
+                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} ${remote_command}
+                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} 'cd examples/servers/express/api-with-express-and-handlebars'
+                ssh -i $HOME/.ssh/thisHost_rsa ${azure_user}@${VM_IP4} 'npm test'
+            '''
+    }
+}
