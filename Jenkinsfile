@@ -6,7 +6,7 @@ extensions: [], submoduleCfg: [],
 userRemoteConfigs: [[credentialsId: 'GithubSSH2', 
 url: 'https://github.com/ParthaK8/codesamples']]]
 */
-
+//git changelog: false, credentialsId: 'githubkey', poll: false, url: 'https://github.com/nanevie/LearnJenkins'
 def myCheckout(myGitUrl, myBranch, myLocalDir) {
     checkout changelog: false, poll: false, scm: [$class: 'GitSCM',
     branches: [[name: myBranch]],
@@ -22,10 +22,10 @@ def myCheckout(myGitUrl, myBranch, myLocalDir) {
 node () {
     stage ('Clone Git') {
         echo "Cloning git"
-        def parthak8_url = "git@github.com:ParthaK8/codesamples"
-        def parthak8_branch = "*/testoper-testing"
-        def local_dir = "parthak8"
-        myCheckout(parthak8_url, parthak8_branch, local_dir)
+        def trialGit = "https://github.com/nanevie/LearnJenkins"
+        def trial_branch = "*/testoper-testing"
+        def local_dir = "nancygitjenkins"
+        myCheckout(trialGit, trial_branch, local_dir)
 
         // set an environment variable, value of local_dir
         env.LOCAL_DIR = local_dir
