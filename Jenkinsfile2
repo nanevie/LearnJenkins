@@ -36,6 +36,7 @@ node () {
         sh "ls -la ${LOCAL_DIR}"
         def CWDABSPATH
         CWDABSPATH = sh (
+
         script: "echo `pwd`",
                 returnStdout: true
         ).trim()
@@ -54,10 +55,11 @@ node () {
     }
 
     stage ('run tests') {
-      sh "cd nancygitjenkins/servers/express/api-with-express-and-handlebars/"
-      sh "npm install"
-      sh "npm test"
-        
+     sh '''#!/bin/bash -l  
+     cd nancygitjenkins/servers/express/api-with-express-and-handlebars/
+     npm install
+     npm test
+      '''  
 
     }
 }
